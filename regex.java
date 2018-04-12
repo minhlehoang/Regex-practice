@@ -31,30 +31,27 @@ public class regex {
 				e.printStackTrace();
 			}
 			int i = 0;
-			Pattern pat = Pattern.compile("(.*)Suggested Retail Price(.*)");
-			Pattern pat_price = Pattern.compile("Suggested Retail Price:(.*?)\"");
-			Pattern pat_title = Pattern.compile("title=\"(.*?)\"");
+			Pattern pat = Pattern.compile("(.*)Suggested Retail Price(.*)"); //pattern for the line with suggested retail price
+			Pattern pat_price = Pattern.compile("Suggested Retail Price:(.*?)\""); //pattern for the price
+			Pattern pat_title = Pattern.compile("title=\"(.*?)\""); //pattern for the title
 			// Read text from the file			
 			while (input.hasNext()) {
 				String line = input.nextLine();
 				Matcher matcher = pat.matcher(line);
 				if(matcher.find()) {
 					i++;
-					//System.out.println(line);
 					Matcher matcher_price = pat_price.matcher(line);
 					Matcher matcher_title = pat_title.matcher(line);
 					if(matcher_title.find() && matcher_price.find()) {
 						String productname = matcher_title.group().substring(matcher_title.group().indexOf("\"") + 1, matcher_title.group().length() - 1);
 						String productprice = matcher_price.group().substring(0, matcher_price.group().length() -1);
 						output_string += "Product #" + i + ": " + productname + "\n" + productprice + "\n";
-						//System.out.println(productname + "\n" + productprice);
 						try {
 							File file_output = new File("outputfile.txt");
 							FileWriter fileWriter = new FileWriter(file_output);
 							fileWriter.write(output_string);
 							fileWriter.flush();
 							fileWriter.close();
-							
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
